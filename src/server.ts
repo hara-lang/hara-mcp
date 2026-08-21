@@ -107,7 +107,8 @@ export function createHaraMcpServer(gateway: HaraGateway): McpServer {
       outputSchema: ExecutionToolResponseSchema,
       annotations: PURE_ANNOTATIONS
     },
-    async (input) => await handled(async () => resultResponse(await gateway.eval(input)))
+    async (input, context) =>
+      await handled(async () => resultResponse(await gateway.eval(input, context.mcpReq.signal)))
   );
 
   server.registerTool(
@@ -120,7 +121,8 @@ export function createHaraMcpServer(gateway: HaraGateway): McpServer {
       outputSchema: ExecutionToolResponseSchema,
       annotations: PURE_ANNOTATIONS
     },
-    async (input) => await handled(async () => resultResponse(await gateway.call(input)))
+    async (input, context) =>
+      await handled(async () => resultResponse(await gateway.call(input, context.mcpReq.signal)))
   );
 
   server.registerTool(
@@ -133,7 +135,8 @@ export function createHaraMcpServer(gateway: HaraGateway): McpServer {
       outputSchema: ExecutionToolResponseSchema,
       annotations: PURE_ANNOTATIONS
     },
-    async (input) => await handled(async () => resultResponse(await gateway.check(input)))
+    async (input, context) =>
+      await handled(async () => resultResponse(await gateway.check(input, context.mcpReq.signal)))
   );
 
   return server;

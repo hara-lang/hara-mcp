@@ -197,6 +197,7 @@ export const GatewayErrorCodeSchema = z.enum([
   'host_incompatible',
   'host_result_invalid',
   'host_collision',
+  'host_busy',
   'request_invalid',
   'limit_exceeded',
   'capability_unsupported',
