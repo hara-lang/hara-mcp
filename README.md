@@ -49,6 +49,14 @@ npm run dev
 
 `HARA_MCP_LOOPBACK_ORIGIN` is optional. When configured, requests carrying an `Origin` header must match it exactly. Wildcards are prohibited. The relay always binds exactly to `127.0.0.1` and refuses wildcard, LAN, or public bind addresses.
 
+Probe the relay process without exposing host or run details:
+
+```sh
+curl --fail --silent http://127.0.0.1:8765/v0/health
+```
+
+The health response proves only that the local relay process is answering. Host readiness remains derived from an authenticated, current-generation heartbeat and is reported separately by `hara_runtime_get`.
+
 See [the loopback relay guide](docs/loopback-relay.md) for the host protocol and lifecycle.
 
 ## MCP catalogue
