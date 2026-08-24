@@ -194,9 +194,7 @@ describe('closed host socket frames', () => {
   it('rejects credentials and unknown authority fields in every frame', () => {
     expect(() => parseHostSocketFrame({ ...HELLO, token: 'device-secret' })).toThrow(HostSocketProtocolError);
     expect(() => parseHostSocketFrame({ ...OFFER, mcpBearer: 'client-secret' })).toThrow(HostSocketProtocolError);
-    expect(() => parseHostSocketFrame({ ...RESULT_FRAME, browserAuthority: true })).toThrow(
-      HostSocketProtocolError
-    );
+    expect(() => parseHostSocketFrame({ ...RESULT_FRAME, browserAuthority: true })).toThrow(HostSocketProtocolError);
   });
 
   it('binds hello and terminal frames to the exact host generation', () => {
