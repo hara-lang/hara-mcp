@@ -60,7 +60,10 @@ function socketError(code: HostSocketProtocolErrorCode, message: string): never 
 export function validateHostSocketUrl(value: string, profile: HostSocketProfile): string {
   const parsedProfile = HostSocketProfileSchema.parse(profile);
   if (typeof value !== 'string' || value.length === 0 || value.length > 256) {
-    return socketError('host_socket_url_invalid', 'host socket URL must be a non-empty string of at most 256 characters');
+    return socketError(
+      'host_socket_url_invalid',
+      'host socket URL must be a non-empty string of at most 256 characters'
+    );
   }
 
   if (parsedProfile === 'production') {
@@ -258,10 +261,7 @@ export type HostSocketFrame = z.infer<typeof HostSocketFrameSchema>;
 function assertFrameIdentity(frame: HostSocketFrame): void {
   if (frame.kind === 'hello') {
     if (frame.hostId !== frame.descriptor.hostId || frame.generation !== frame.descriptor.generation) {
-      socketError(
-        'host_socket_host_identity_stale',
-        'hello frame identity must match the enclosed host descriptor'
-      );
+      socketError('host_socket_host_identity_stale', 'hello frame identity must match the enclosed host descriptor');
     }
     return;
   }
