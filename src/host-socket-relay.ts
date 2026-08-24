@@ -619,7 +619,7 @@ export class HostedHostSocketRelay {
     const active = state.active;
     if (active === null) return relayError('host_request_unknown', `command ${frame.commandId} is not active`, 404);
 
-    let nextActive = cloneJson(active);
+    const nextActive = cloneJson(active);
     if (frame.commandId === active.commandId) {
       if (frame.relaySequence !== active.offer.sequence) {
         return relayError('host_command_invalid', 'execute acknowledgement references the wrong relay sequence', 409);
