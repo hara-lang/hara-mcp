@@ -1,0 +1,36 @@
+name: Patch host-socket relay const lint
+
+on:
+  push:
+    branches:
+      - agent/phase-3-host-socket-relay
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply the exact prefer-const correction
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('src/host-socket-relay.ts')
+          source = path.read_text()
+          old = '    let nextActive = cloneJson(active);\n'
+          new = '    const nextActive = cloneJson(active);\n'
+          if old not in source:
+              raise SystemExit('expected exact source line was not found')
+          path.write_text(source.replace(old, new, 1))
+          PY
+      - name: Commit the correction
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/host-socket-relay.ts
+          git commit -m "Satisfy hosted relay const lint"
+          git push
