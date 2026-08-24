@@ -30,16 +30,6 @@ jobs:
         run: npm run typecheck
       - name: Lint
         run: npm run lint
-      - name: Format new host-socket files
-        run: npx prettier --write src/host-socket-protocol.ts test/host-socket-protocol.test.ts
-      - name: Upload formatted host-socket files
-        uses: actions/upload-artifact@v4
-        with:
-          name: formatted-host-socket-files
-          path: |
-            src/host-socket-protocol.ts
-            test/host-socket-protocol.test.ts
-          if-no-files-found: error
       - name: Check formatting
         run: npm run format:check
       - name: Test
