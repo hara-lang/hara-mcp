@@ -8,6 +8,7 @@ export {
   type LoopbackRelayServerOptions
 } from './loopback-relay.js';
 export * from './host-socket-protocol.js';
+export * from './host-socket-relay.js';
 export * from './protocol.js';
 export * from './relay-protocol.js';
 export { createHaraMcpServer, SERVER_NAME, SERVER_VERSION, TOOL_NAMES, type ToolName } from './server.js';
