@@ -282,11 +282,7 @@ describe('durable hosted host lifecycle', () => {
 
     await expect(
       coordinator.handleHostFrame(
-        resultFrame(
-          offer,
-          result({ value: { text: '43', json: 43 } }),
-          '50000000-0000-4000-8000-000000000002'
-        )
+        resultFrame(offer, result({ value: { text: '43', json: 43 } }), '50000000-0000-4000-8000-000000000002')
       )
     ).rejects.toMatchObject({ code: 'host_terminal_collision' });
 
@@ -382,9 +378,7 @@ describe('durable hosted host lifecycle', () => {
     await coordinator.handleHostFrame(ackFrame(cancel, '40000000-0000-4000-8000-000000000001'));
 
     await expect(
-      coordinator.handleHostFrame(
-        resultFrame(offer, result(), '50000000-0000-4000-8000-000000000003')
-      )
+      coordinator.handleHostFrame(resultFrame(offer, result(), '50000000-0000-4000-8000-000000000003'))
     ).rejects.toMatchObject({ code: 'host_result_invalid' });
 
     const timedOut = result({
