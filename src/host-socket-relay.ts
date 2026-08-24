@@ -629,7 +629,10 @@ export class HostedHostSocketRelay {
       if (frame.relaySequence !== active.cancel.frame.sequence) {
         return relayError('host_command_invalid', 'cancel acknowledgement references the wrong relay sequence', 409);
       }
-      nextActive.cancel.acknowledged = true;
+      nextActive.cancel = {
+        ...active.cancel,
+        acknowledged: true
+      };
     } else {
       return relayError('host_command_invalid', `command ${frame.commandId} does not match the active request`, 409);
     }
@@ -959,10 +962,7 @@ export class HostedHostSocketRelay {
     });
   }
 
-  #nextRevision(
-    state: HostedRelayDurableState,
-    patch: Partial<HostedRelayDurableState>
-  ): HostedRelayDurableState {
+  #nextRevision(state: HostedRelayDurableState, patch: Partial<HostedRelayDurableState>): HostedRelayDurableState {
     return HostedRelayDurableStateSchema.parse({
       ...state,
       ...patch,
@@ -996,10 +996,9 @@ export class HostedHostSocketRelay {
     };
     return HostedRelayDurableStateSchema.parse({
       ...state,
-      hostMessages: [
-        ...state.hostMessages.filter((item) => item.messageId !== frame.messageId),
-        entry
-      ].slice(-this.#hostMessageLimit)
+      hostMessages: [...state.hostMessages.filter((item) => item.messageId !== frame.messageId), entry].slice(
+        -this.#hostMessageLimit
+      )
     });
   }
 
