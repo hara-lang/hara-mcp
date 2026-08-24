@@ -1,0 +1,28 @@
+name: Host socket formatter proof
+
+on:
+  push:
+    branches:
+      - agent/phase-3-host-socket-protocol
+
+permissions:
+  contents: read
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx prettier --write src/host-socket-protocol.ts test/host-socket-protocol.test.ts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: formatted-host-socket-files
+          path: |
+            src/host-socket-protocol.ts
+            test/host-socket-protocol.test.ts
+          if-no-files-found: error
