@@ -260,8 +260,8 @@ describe('connection epoch and relay sequence fencing', () => {
       generation: GENERATION
     });
 
-    expect(()
-      => fence.acceptRelayFrame({
+    expect(() =>
+      fence.acceptRelayFrame({
         ...READY,
         connectionEpoch: '40000000-0000-4000-8000-000000000000'
       })
