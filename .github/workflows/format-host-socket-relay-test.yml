@@ -1,0 +1,34 @@
+name: Format hosted relay test
+
+on:
+  push:
+    branches:
+      - agent/phase-3-host-socket-relay
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install locked formatting toolchain
+        run: npm ci --ignore-scripts
+      - name: Format the exact relay test
+        run: npx prettier --write test/host-socket-relay.test.ts
+      - name: Commit the formatted test when needed
+        run: |
+          if git diff --quiet -- test/host-socket-relay.test.ts; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add test/host-socket-relay.test.ts
+          git commit -m "Format hosted relay lifecycle tests"
+          git push
